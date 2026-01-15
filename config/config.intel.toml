@@ -1,0 +1,29 @@
+# Perplexica configuration - Intel desktop profile
+# This file points Perplexica to Ollama and documents model expectations for CPU-only Intel.
+
+[general]
+# Directory that Perplexica can scan for local documents.
+documents_dir = "/app/documents"
+
+[models]
+# Default model name; replace with your preferred Ollama model.
+default = "llama3"
+
+[models.providers.ollama]
+# Intel profile settings
+# Choose ONE of the BASE_URL values below.
+# If using Dockerized Ollama service (compose.intel.yaml):
+# BASE_URL = "http://ollama:11434"
+# If using native Ollama on the host:
+BASE_URL = "http://host.docker.internal:11434"
+
+# Intel guidance: prefer 4-8B quantized models for CPU-only performance.
+# Example alternatives: "llama3:8b-instruct-q4_0", "mistral:7b-instruct-q4_0".
+
+[search]
+# Tunable settings for retrieval behavior.
+results_limit = 8
+
+[retriever]
+# Keep concurrency modest for Intel CPUs.
+max_concurrency = 2

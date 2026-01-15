@@ -1,0 +1,39 @@
+# Intel desktop profile - Perplexica + optional Ollama container
+# Run from repo root: docker compose -f docker/compose.intel.yaml up -d
+
+services:
+  # Optional: run Ollama in Docker instead of native on host.
+  # If you use native Ollama, comment out this service and set BASE_URL to host.docker.internal in config.intel.toml.
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+  # Perplexica is a single Next.js app that serves both UI and API.
+  # Running multiple containers can break uploads because /api is same-origin.
+  perplexica:
+    # Build from the Perplexica submodule (tag pinned in scripts/update-perplexica.sh).
+    image: perplexica-local:1.12.1
+    build:
+      context: ../perplexica
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      # Intel profile config (kept for reference).
+      - ../config/config.intel.toml:/home/perplexica/config.toml
+      # Persist uploads and app data.
+      - perplexica_data:/home/perplexica/data
+    restart: unless-stopped
+    depends_on:
+      # If you do not use Dockerized Ollama, remove this dependency.
+      - ollama
+
+volumes:
+  # Persistent Ollama model cache when using the Dockerized Ollama service.
+  ollama_data:
+  # Persist Perplexica uploads and database.
+  perplexica_data:
