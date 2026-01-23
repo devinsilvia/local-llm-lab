@@ -139,12 +139,15 @@ docker compose -f docker/compose.m1pro.yaml up -d --build
 - **Performance issues:**
   - Intel: try smaller models or lower concurrency.
   - M1 Pro: verify Ollama is using GPU (native, not Docker) and avoid other heavy GPU tasks.
+- **iOS input zoom:** forcing inputs below 16px can trigger Safari zoom on focus; if that happens, revert the font size override in `perplexica/src/app/globals.css`.
+- **Docker build snapshot error:** if you see `failed to prepare extraction snapshot` during `docker compose ... --build`, clear build cache with `docker builder prune` (or `docker builder prune -a` if needed). Running this occasionally can also free disk space.
 
 ## Perplexica source and updates
 
 - The Perplexica source lives in the `perplexica/` git submodule.
 - The Docker builds use the checked-out tag in that submodule.
 - To update to a new release tag, edit `PERPLEXICA_TAG` in `scripts/update-perplexica.sh` and run it.
+- See `PERPLEXICA_UPDATE_WORKFLOW.md` for a recommended workflow to pull upstream changes while keeping local modifications.
 
 ## Using Perplexica (after it is running)
 
