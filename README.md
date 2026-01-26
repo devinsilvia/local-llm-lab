@@ -147,6 +147,7 @@ docker compose -f docker/compose.m1pro.yaml up -d --build
 - The Perplexica source lives in the `perplexica/` git submodule.
 - The Docker builds use the checked-out tag in that submodule.
 - To update to a new release tag, edit `PERPLEXICA_TAG` in `scripts/update-perplexica.sh` and run it.
+- Keep the `image: perplexica-local:<tag>` value in `docker/compose.*.yaml` aligned with `PERPLEXICA_TAG`.
 - See `PERPLEXICA_UPDATE_WORKFLOW.md` for a recommended workflow to pull upstream changes while keeping local modifications.
 
 ## Using Perplexica (after it is running)

@@ -1,7 +1,7 @@
 # Perplexica Submodule Update Workflow
 
 This workflow keeps local customizations intact while pulling upstream Perplexica changes.
-It assumes you track local changes on a branch inside the submodule and rebase onto upstream releases.
+Use the fast path if you do not maintain local patches; otherwise use the branch-based flow.
 
 ## One-time setup (inside the submodule)
 
@@ -11,7 +11,29 @@ cd perplexica
 git remote add upstream <perplexica-upstream-url>
 ```
 
-## Routine update (recommended)
+## Fast path (no local patches)
+
+1. Update the tag in the helper script:
+   ```bash
+   sed -n '1,40p' scripts/update-perplexica.sh
+   # Edit PERPLEXICA_TAG in that file.
+   ```
+
+2. Check out the new tag in the submodule:
+   ```bash
+   ./scripts/update-perplexica.sh
+   ```
+
+3. Update the image tag in the Compose files to match:
+   - `docker/compose.intel.yaml`
+   - `docker/compose.m1pro.yaml`
+
+4. Rebuild Perplexica:
+   ```bash
+   docker compose -f docker/compose.m1pro.yaml up -d --build
+   ```
+
+## Routine update (with local patches)
 
 1. Ensure your local changes are committed on a dedicated branch:
    ```bash
@@ -32,7 +54,9 @@ git remote add upstream <perplexica-upstream-url>
 
 4. Resolve conflicts (if any), then rebuild/test Perplexica.
 
-5. Update the submodule pointer in the main repo:
+5. Update the tag in `scripts/update-perplexica.sh` and the Compose image tag to match.
+
+6. Update the submodule pointer in the main repo:
    ```bash
    cd ..
    git add perplexica
