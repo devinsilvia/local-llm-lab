@@ -94,6 +94,21 @@ volumes persists across restarts, so uploads and settings remain in place.
 - If a collaborator uses a different machine profile, they should use the
   matching script and ensure Ollama is installed for their platform.
 
+## Model compatibility for web search (Ollama)
+
+This section tracks models that have been confirmed to work with Perplexica web
+search. The goal is to help users match a model to their hardware if they
+specifically want web search functionality. The table is ordered by increasing
+model size, which often correlates with hardware requirements.
+
+| Model (Ollama tag) | Params | Quant | Hardware tested | Min RAM/VRAM | Notes |
+| --- | --- | --- | --- | --- | --- |
+| qwen3:0.6b | 0.75B | Q4_K_M | MacBook Pro (M1, 32GB unified RAM) | Unknown (tested on 32GB unified) | -- |
+| granite4:1b | 1.6B | BF16 | MacBook Pro (M1, 32GB unified RAM) | Unknown (tested on 32GB unified) | -- |
+| ministral-3:3b | 3.8B | Q4_K_M | MacBook Pro (M1, 32GB unified RAM) | Unknown (tested on 32GB unified) | -- |
+| qwen2.5:7b-instruct-q4_0 | 7.6B | Q4_0 | MacBook Pro (M1, 32GB unified RAM) | Unknown (tested on 32GB unified) | -- |
+| llama3.1:8b-instruct-q4_0 | 8.0B | Q4_0 | MacBook Pro (M1, 32GB unified RAM) | Unknown (tested on 32GB unified) | -- |
+
 ## Where to go next
 
 - `README.md` for platform-specific setup and run commands.
