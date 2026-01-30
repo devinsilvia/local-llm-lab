@@ -90,9 +90,9 @@ git submodule update --init --recursive
   - You are going to use the `ollama` container in `docker/compose.macos-intel.yaml`.
 3. If using native Ollama:
    - Perplexica will talk to `http://host.docker.internal:11434`.
-4. Start the stack:
-  - `./scripts/run-macos-intel.sh`
-  - Or directly: `docker compose -f docker/compose.macos-intel.yaml up -d`
+4. Start the stack (builds images if needed):
+   - `./scripts/run-macos-intel.sh`
+   - Or directly: `docker compose -f docker/compose.macos-intel.yaml up -d --build`
 5. Open Perplexica at `http://localhost:3000`.
 6. Use the Perplexica UI upload feature (paperclip) to add documents for indexing.
 
@@ -100,9 +100,9 @@ git submodule update --init --recursive
 
 1. Install and start native Ollama.
 2. Run `ollama run llama3` once to ensure the model is present.
-3. Start the stack:
-  - `./scripts/run-macos-apple-silicon.sh`
-  - Or directly: `docker compose -f docker/compose.macos-apple-silicon.yaml up -d`
+3. Start the stack (builds images if needed):
+   - `./scripts/run-macos-apple-silicon.sh`
+   - Or directly: `docker compose -f docker/compose.macos-apple-silicon.yaml up -d --build`
 4. Perplexica will call Ollama at `http://host.docker.internal:11434`.
 5. Open Perplexica at `http://localhost:3000`.
 6. Use the Perplexica UI upload feature (paperclip) to add documents for indexing.
@@ -111,9 +111,9 @@ git submodule update --init --recursive
 
 1. Install and start Ollama for Windows.
 2. Run `ollama run llama3` once to ensure the model is present.
-3. Start the stack (PowerShell, uses `docker/compose.windows.yaml`):
+3. Start the stack (PowerShell, builds images if needed, uses `docker/compose.windows.yaml`):
    - `./scripts/run-windows.ps1`
-   - Or directly: `docker compose -f docker/compose.windows.yaml up -d`
+   - Or directly: `docker compose -f docker/compose.windows.yaml up -d --build`
 4. Perplexica will call Ollama at `http://host.docker.internal:11434`.
 5. Open Perplexica at `http://localhost:3000`.
 6. Use the Perplexica UI upload feature (paperclip) to add documents for indexing.
