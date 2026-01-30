@@ -21,6 +21,22 @@ Use one repo and pick the setup category that matches the machine you are runnin
 - Git installed.
 - No local Node or build tools required. Everything runs via Docker.
 
+## Clone the repo (with submodules)
+
+Perplexica is included as a git submodule, so you need to initialize it before
+running any Docker or setup commands.
+
+```bash
+git clone --recurse-submodules https://github.com/devinsilvia/local-llm-lab
+cd local-llm-lab
+```
+
+If you already cloned without submodules, run:
+
+```bash
+git submodule update --init --recursive
+```
+
 ## Additional prerequisites - macOS Intel
 
 - macOS Sequoia 15.x on Intel.
