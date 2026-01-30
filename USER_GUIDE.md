@@ -47,6 +47,10 @@ services. It also:
 
 The `scripts/` directory provides helper scripts to launch the correct Compose
 file for your hardware profile, so a user does not need to memorize commands.
+Profiles in this repo:
+- macOS Intel (`scripts/run-macos-intel.sh`)
+- macOS Apple Silicon (`scripts/run-macos-apple-silicon.sh`)
+- Windows (`scripts/run-windows.ps1`)
 
 ## How the pieces fit together
 
@@ -77,7 +81,7 @@ Once the provider and models are configured, you can chat immediately.
 1. Start Ollama (if not already running).
 2. Start Perplexica with the profile script.
 3. Open the UI and chat.
-4. Use the paperclip to upload documents for retrieval.
+4. Use the paperclip to upload documents for retrieval (`.pdf`, `.docx`, `.txt`, `.md`).
 5. Ask questions referencing your uploads or using search tools.
 
 ### Stopping and resuming
@@ -93,6 +97,8 @@ volumes persists across restarts, so uploads and settings remain in place.
 - Local changes to Perplexica are summarized in `PERPLEXICA_CHANGES.md`.
 - If a collaborator uses a different machine profile, they should use the
   matching script and ensure Ollama is installed for their platform.
+- Uploaded file citations open via `/api/uploads/<fileId>` inside the running
+  Perplexica instance.
 
 ## Model compatibility for web search (Ollama)
 
