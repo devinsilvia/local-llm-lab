@@ -1,3 +1,4 @@
 [submodule "perplexica"]
 	path = perplexica
 	url = https://github.com/devinsilvia/Perplexica.git
+	branch = local-customizations
