@@ -102,6 +102,44 @@ Use one repo and pick the setup category that matches the machine you are runnin
 5. Open Perplexica at `http://localhost:3000`.
 6. Use the Perplexica UI upload feature (paperclip) to add documents for indexing.
 
+## Using Perplexica (after it is running)
+
+The first run usually takes you through a setup flow inside the web UI at `http://localhost:3000`.
+Menu names can vary slightly by version, but the flow is typically:
+
+1. Open the UI and go to **Settings** or **Connections**.
+2. Add a **provider/connection** for Ollama.
+   - API URL: `http://host.docker.internal:11434`
+   - API key: leave blank or use any placeholder if required by the form.
+3. Add a **chat model** and an **embedding model**.
+   - Provider: `Ollama`
+   - Model key: use the exact Ollama tag shown by `ollama list` (this is the model name).
+   - Example chat model key: `llama3.1:8b-instruct-q4_0`
+   - Example embedding model key: `nomic-embed-text` or `nomic-embed-text:latest`
+4. Save the settings and return to the main chat UI.
+
+Note: Perplexica uses tool calling during search. If your chat model does not support tools in Ollama, requests can hang or fail.
+Perplexica v1.12.1 stores provider and model settings in its internal database under `/home/perplexica/data`, not in the `config/*.toml` files.
+
+If you do not see the setup flow, look for a Settings or Admin icon in the left sidebar or top navigation.
+
+### Verifying models in Ollama
+
+Use these commands on the host to confirm the model keys available to Perplexica:
+
+```bash
+ollama list
+```
+
+If a model is missing, pull it once:
+
+```bash
+ollama pull llama3
+ollama pull nomic-embed-text
+```
+
+Then return to Perplexica and select the same model key.
+
 ## Stopping and restarting Perplexica
 
 Use these commands from the repo root.
@@ -193,44 +231,6 @@ docker compose -f docker/compose.macos-apple-silicon.fresh.yaml up -d
 - To update to a new release tag, edit `PERPLEXICA_TAG` in `scripts/update-perplexica.sh` and run it.
 - Keep the `image: perplexica-local:<tag>` value in `docker/compose.*.yaml` aligned with `PERPLEXICA_TAG`.
 - See `PERPLEXICA_UPDATE_WORKFLOW.md` for a recommended workflow to pull upstream changes while keeping local modifications.
-
-## Using Perplexica (after it is running)
-
-The first run usually takes you through a setup flow inside the web UI at `http://localhost:3000`.
-Menu names can vary slightly by version, but the flow is typically:
-
-1. Open the UI and go to **Settings** or **Connections**.
-2. Add a **provider/connection** for Ollama.
-   - API URL: `http://host.docker.internal:11434`
-   - API key: leave blank or use any placeholder if required by the form.
-3. Add a **chat model** and an **embedding model**.
-   - Provider: `Ollama`
-   - Model key: use the exact Ollama tag shown by `ollama list` (this is the model name).
-   - Example chat model key: `llama3.1:8b-instruct-q4_0`
-   - Example embedding model key: `nomic-embed-text` or `nomic-embed-text:latest`
-4. Save the settings and return to the main chat UI.
-
-Note: Perplexica uses tool calling during search. If your chat model does not support tools in Ollama, requests can hang or fail.
-Perplexica v1.12.1 stores provider and model settings in its internal database under `/home/perplexica/data`, not in the `config/*.toml` files.
-
-If you do not see the setup flow, look for a Settings or Admin icon in the left sidebar or top navigation.
-
-### Verifying models in Ollama
-
-Use these commands on the host to confirm the model keys available to Perplexica:
-
-```bash
-ollama list
-```
-
-If a model is missing, pull it once:
-
-```bash
-ollama pull llama3
-ollama pull nomic-embed-text
-```
-
-Then return to Perplexica and select the same model key.
 
 ### Uploads and attached files
 
