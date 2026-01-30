@@ -25,12 +25,13 @@ git remote add upstream <perplexica-upstream-url>
    ```
 
 3. Update the image tag in the Compose files to match:
-   - `docker/compose.intel.yaml`
-   - `docker/compose.m1pro.yaml`
+   - `docker/compose.macos-intel.yaml`
+   - `docker/compose.macos-apple-silicon.yaml`
+   - `docker/compose.windows.yaml`
 
 4. Rebuild Perplexica:
    ```bash
-   docker compose -f docker/compose.m1pro.yaml up -d --build
+   docker compose -f docker/compose.macos-apple-silicon.yaml up -d --build
    ```
 
 ## Routine update (with local patches)
@@ -80,5 +81,5 @@ git merge upstream/<tag-or-branch>
 - If you need to “refresh” local changes without rewriting history, use merge instead of rebase.
 - Always rebuild after updating the submodule:
   ```bash
-  docker compose -f docker/compose.m1pro.yaml up -d --build
+  docker compose -f docker/compose.macos-apple-silicon.yaml up -d --build
   ```

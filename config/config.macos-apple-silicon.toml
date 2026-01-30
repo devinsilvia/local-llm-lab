@@ -1,0 +1,25 @@
+# Perplexica configuration - macOS Apple Silicon profile
+# This file assumes native Ollama on Apple Silicon for GPU/Neural Engine acceleration.
+
+[general]
+# Directory that Perplexica can scan for local documents.
+documents_dir = "/app/documents"
+
+[models]
+# Default model name; replace with your preferred Ollama model.
+default = "llama3"
+
+[models.providers.ollama]
+# macOS Apple Silicon profile settings (native Ollama only)
+BASE_URL = "http://host.docker.internal:11434"
+
+# Apple Silicon guidance: 8-14B models with quantization are reasonable.
+# Example alternatives: "llama3:8b-instruct-q4_0", "llama3:14b-instruct-q4_0".
+
+[search]
+# Tunable settings for retrieval behavior.
+results_limit = 8
+
+[retriever]
+# Apple Silicon can handle a bit more parallelism.
+max_concurrency = 4

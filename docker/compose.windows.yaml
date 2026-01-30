@@ -1,5 +1,5 @@
-# M1 Pro laptop profile - Perplexica with native Ollama on host
-# Run from repo root: docker compose -f docker/compose.m1pro.yaml up -d
+# Windows profile - Perplexica with native Ollama on host
+# Run from repo root: docker compose -f docker/compose.windows.yaml up -d
 
 services:
   # Perplexica is a single Next.js app that serves both UI and API.
@@ -13,8 +13,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # M1 Pro profile config (kept for reference).
-      - ../config/config.m1pro.toml:/home/perplexica/config.toml
+      # Windows profile config (kept for reference).
+      - ../config/config.windows.toml:/home/perplexica/config.toml
       # Persist uploads and app data.
       - perplexica_data:/home/perplexica/data
     restart: unless-stopped

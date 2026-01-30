@@ -1,0 +1,23 @@
+# macOS Apple Silicon profile - Perplexica with native Ollama on host
+# Run from repo root: docker compose -f docker/compose.macos-apple-silicon.yaml up -d
+
+services:
+  # Perplexica is a single Next.js app that serves both UI and API.
+  # Running multiple containers can break uploads because /api is same-origin.
+  perplexica:
+    # Build from the Perplexica submodule (tag pinned in scripts/update-perplexica.sh).
+    image: perplexica-local:1.12.1
+    build:
+      context: ../perplexica
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      # macOS Apple Silicon profile config (kept for reference).
+      - ../config/config.macos-apple-silicon.toml:/home/perplexica/config.toml
+      # Persist uploads and app data.
+      - perplexica_data:/home/perplexica/data
+    restart: unless-stopped
+
+volumes:
+  perplexica_data:

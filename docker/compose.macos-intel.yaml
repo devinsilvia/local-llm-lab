@@ -1,9 +1,9 @@
-# Intel desktop profile - Perplexica + optional Ollama container
-# Run from repo root: docker compose -f docker/compose.intel.yaml up -d
+# macOS Intel profile - Perplexica + optional Ollama container
+# Run from repo root: docker compose -f docker/compose.macos-intel.yaml up -d
 
 services:
   # Optional: run Ollama in Docker instead of native on host.
-  # If you use native Ollama, comment out this service and set BASE_URL to host.docker.internal in config.intel.toml.
+  # If you use native Ollama, comment out this service and set BASE_URL to host.docker.internal in config.macos-intel.toml.
   ollama:
     image: ollama/ollama:latest
     ports:
@@ -23,8 +23,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Intel profile config (kept for reference).
-      - ../config/config.intel.toml:/home/perplexica/config.toml
+      # macOS Intel profile config (kept for reference).
+      - ../config/config.macos-intel.toml:/home/perplexica/config.toml
       # Persist uploads and app data.
       - perplexica_data:/home/perplexica/data
     restart: unless-stopped

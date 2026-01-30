@@ -1,5 +1,5 @@
-# Perplexica configuration - M1 Pro laptop profile
-# This file assumes native Ollama on Apple Silicon for GPU/Neural Engine acceleration.
+# Perplexica configuration - Windows profile
+# This file assumes native Ollama on Windows with GPU acceleration when available.
 
 [general]
 # Directory that Perplexica can scan for local documents.
@@ -10,10 +10,10 @@ documents_dir = "/app/documents"
 default = "llama3"
 
 [models.providers.ollama]
-# M1 Pro profile settings (native Ollama only)
+# Windows profile settings (native Ollama only)
 BASE_URL = "http://host.docker.internal:11434"
 
-# M1 Pro guidance: 8-14B models with quantization are reasonable.
+# Windows guidance: 8-14B models with quantization are reasonable on midrange GPUs.
 # Example alternatives: "llama3:8b-instruct-q4_0", "llama3:14b-instruct-q4_0".
 
 [search]
@@ -21,5 +21,5 @@ BASE_URL = "http://host.docker.internal:11434"
 results_limit = 8
 
 [retriever]
-# M1 Pro can handle a bit more parallelism.
+# Adjust concurrency based on your GPU and system load.
 max_concurrency = 4
