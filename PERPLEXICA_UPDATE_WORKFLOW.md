@@ -7,8 +7,11 @@ Use the fast path if you do not maintain local patches; otherwise use the branch
 
 ```bash
 cd perplexica
-# Only once: add the upstream remote
+# origin should point at your fork (set by .gitmodules)
+git remote -v
+# Only once: add the upstream remote (original Perplexica repo)
 git remote add upstream <perplexica-upstream-url>
+git fetch upstream --tags
 ```
 
 ## Fast path (no local patches)
@@ -55,9 +58,14 @@ git remote add upstream <perplexica-upstream-url>
 
 4. Resolve conflicts (if any), then rebuild/test Perplexica.
 
-5. Update the tag in `scripts/update-perplexica.sh` and the Compose image tag to match.
+5. Push the updated branch to your fork:
+   ```bash
+   git push origin local-customizations
+   ```
 
-6. Update the submodule pointer in the main repo:
+6. Update the tag in `scripts/update-perplexica.sh` and the Compose image tag to match.
+
+7. Update the submodule pointer in the main repo:
    ```bash
    cd ..
    git add perplexica
