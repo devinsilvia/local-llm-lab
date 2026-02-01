@@ -15,6 +15,8 @@ It supports three setup categories:
 
 Use one repo and pick the setup category that matches the machine you are running on.
 
+Note: The Discover/news widgets and the post-response media sidebar (images/videos) are disabled in this fork.
+
 ## Prerequisites (common)
 
 - Docker Desktop installed and running.

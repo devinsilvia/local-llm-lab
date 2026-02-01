@@ -16,6 +16,9 @@
 - Normalized tool-call arguments with JSON repair before executing researcher actions.
 - Added search error steps so invalid query payloads surface in the Research Progress UI instead of crashing searches.
 - Added query coercion for search tools so stringified query lists are parsed into arrays when possible.
+- Disabled the Discover/news surfaces in the UI.
+- Removed the post-response media sidebar (images/videos).
+- Updated preferences descriptions and defaults to indicate these features are disabled in this local setup.
 
 Files touched inside the submodule:
 
@@ -39,3 +42,7 @@ Files touched inside the submodule:
 - `perplexica/src/lib/agents/search/researcher/actions/registry.ts`
 - `perplexica/src/lib/types.ts`
 - `perplexica/src/app/api/suggestions/route.ts`
+- `perplexica/src/components/Sidebar.tsx`
+- `perplexica/src/components/EmptyChat.tsx`
+- `perplexica/src/components/MessageBox.tsx`
+- `perplexica/src/lib/config/index.ts`
