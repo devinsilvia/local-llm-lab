@@ -7,7 +7,8 @@ documents_dir = "/app/documents"
 
 [models]
 # Default model name; replace with your preferred Ollama model.
-default = "llama3"
+# Use a tool-capable model so web search works out of the box.
+default = "llama3.1:8b-instruct-q4_0"
 
 [models.providers.ollama]
 # macOS Apple Silicon profile settings (native Ollama only)

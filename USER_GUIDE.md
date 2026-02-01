@@ -51,6 +51,7 @@ Profiles in this repo:
 - macOS Intel (`scripts/run-macos-intel.sh`)
 - macOS Apple Silicon (`scripts/run-macos-apple-silicon.sh`)
 - Windows (`scripts/run-windows.ps1`)
+- Linux (`scripts/run-linux.sh`)
 
 ## How the pieces fit together
 
@@ -72,7 +73,7 @@ Profiles in this repo:
 4. Open Perplexica at `http://localhost:3000`.
 5. In Perplexica, configure:
    - A provider pointing at `http://host.docker.internal:11434`.
-   - A chat model and an embedding model.
+   - A chat model and an embedding model. Use a tool-capable chat model (for example `llama3.1:8b-instruct-q4_0`) so web search works correctly.
 
 Once the provider and models are configured, you can chat immediately.
 

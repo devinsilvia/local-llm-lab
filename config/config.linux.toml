@@ -1,5 +1,5 @@
-# Perplexica configuration - Windows profile
-# This file assumes native Ollama on Windows with GPU acceleration when available.
+# Perplexica configuration - Linux profile
+# This file assumes native Ollama on Linux with GPU acceleration when available.
 
 [general]
 # Directory that Perplexica can scan for local documents.
@@ -11,10 +11,12 @@ documents_dir = "/app/documents"
 default = "llama3.1:8b-instruct-q4_0"
 
 [models.providers.ollama]
-# Windows profile settings (native Ollama only)
+# Linux profile settings (native Ollama only)
 BASE_URL = "http://host.docker.internal:11434"
 
-# Windows guidance: 8-14B models with quantization are reasonable on midrange GPUs.
+# Linux guidance:
+# - Integrated Intel GPUs are not well supported; treat as CPU-only.
+# - NVIDIA GPUs (CUDA) are best supported; AMD support varies with ROCm.
 # Example alternatives: "llama3:8b-instruct-q4_0", "llama3:14b-instruct-q4_0".
 
 [search]

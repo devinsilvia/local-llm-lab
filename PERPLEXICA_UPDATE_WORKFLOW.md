@@ -31,6 +31,7 @@ git fetch upstream --tags
    - `docker/compose.macos-intel.yaml`
    - `docker/compose.macos-apple-silicon.yaml`
    - `docker/compose.windows.yaml`
+   - `docker/compose.linux.yaml`
 
 4. Rebuild Perplexica:
    ```bash

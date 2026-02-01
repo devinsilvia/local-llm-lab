@@ -7,13 +7,14 @@ This repository provides a local LLM stack with:
 - **Ollama** as the model runtime.
 - **Perplexica** as the web UI and retrieval system.
 
-It supports three setup categories:
+It supports four setup categories:
 
 - **macOS Intel**: Intel-based Macs (CPU-only for LLMs; AMD GPUs are not used by Ollama).
 - **macOS Apple Silicon**: M-series Macs with Apple GPU/Neural Engine acceleration.
 - **Windows**: Windows PCs with NVIDIA GPU acceleration (AMD support is more limited).
+- **Linux**: Linux PCs with either integrated Intel GPUs (CPU-only) or dedicated GPUs (NVIDIA best supported; AMD/Intel Arc support varies).
 
-Use one repo and pick the setup category that matches the machine you are running on.
+**Pick the setup category that matches the machine you are running on.**
 
 Note: The Discover/news widgets and the post-response media sidebar (images/videos) are disabled in this fork.
 
@@ -78,11 +79,21 @@ git submodule update --init --recursive
 - GPU: NVIDIA RTX 3060 (12 GB) or better for smooth 8-14B inference; AMD GPUs are currently less supported in Ollama on Windows.
 - Storage: 200+ GB free SSD for models and data.
 
+## Additional prerequisites - Linux
+
+- Docker Engine or Docker Desktop installed and running.
+- Install Ollama for Linux and start it before Docker.
+- Use `http://host.docker.internal:11434` as the Ollama API URL in Perplexica.
+- Integrated Intel GPUs are not well supported; treat as CPU-only.
+- NVIDIA GPUs are best supported (CUDA). AMD/Intel Arc support varies by driver/ROCm.
+
 ## Model recommendations
 
 - **macOS Intel:** use **4-8B** models with quantization (e.g., 4-bit), such as Llama 3 8B or Mistral 7B variants; larger models are likely slow.
 - **macOS Apple Silicon:** **8-14B** models with appropriate quantization are feasible; unified memory allows bigger models, but speed and context size still matter.
 - **Windows:** target **8-14B** 4-bit models if you have a midrange NVIDIA GPU; drop to **4-8B** on CPU-only or AMD.
+- **Linux (integrated Intel GPU):** treat as CPU-only and use **4-8B** quantized models.
+- **Linux (dedicated GPU):** NVIDIA is best supported (CUDA) and can handle **8-14B** 4-bit models; AMD/Intel Arc support varies—use smaller models if needed.
 
 ## Running the macOS Intel profile
 
@@ -120,6 +131,23 @@ git submodule update --init --recursive
 5. Open Perplexica at `http://localhost:3000`.
 6. Use the Perplexica UI upload feature (paperclip) to add documents for indexing.
 
+## Running the Linux profile
+
+### Linux with integrated Intel GPU (CPU-only)
+
+1. Install and start Ollama for Linux.
+2. Run `ollama run llama3` once to ensure the model is present.
+3. Start the stack (builds images if needed):
+   - `./scripts/run-linux.sh`
+   - Or directly: `docker compose -f docker/compose.linux.yaml up -d --build`
+4. Perplexica will call Ollama at `http://host.docker.internal:11434`.
+5. Open Perplexica at `http://localhost:3000`.
+6. Use the Perplexica UI upload feature (paperclip) to add documents for indexing.
+
+### Linux with dedicated GPU
+
+Follow the same steps as above. NVIDIA GPUs are best supported (CUDA). AMD/Intel Arc support varies by driver/ROCm—if performance is poor, drop to smaller 4–8B models.
+
 ## Using Perplexica (after it is running)
 
 The first run usually takes you through a setup flow inside the web UI at `http://localhost:3000`.
@@ -136,7 +164,7 @@ Menu names can vary slightly by version, but the flow is typically:
    - Example embedding model key: `nomic-embed-text` or `nomic-embed-text:latest`
 4. Save the settings and return to the main chat UI.
 
-Note: Perplexica uses tool calling during search. If your chat model does not support tools in Ollama, requests can hang or fail.
+Note: Perplexica uses tool calling during search. If your chat model does not support tools in Ollama, requests can hang or fail. Use a tool-capable model (for example `llama3.1:8b-instruct-q4_0`) to avoid web-search failures.
 Perplexica v1.12.1 stores provider and model settings in its internal database under `/home/perplexica/data`, not in the `config/*.toml` files.
 
 If you do not see the setup flow, look for a Settings or Admin icon in the left sidebar or top navigation.
@@ -182,6 +210,13 @@ docker compose -f docker/compose.macos-intel.yaml up -d --build
 # Uses docker/compose.windows.yaml (no Ollama container).
 docker compose -f docker/compose.windows.yaml down
 docker compose -f docker/compose.windows.yaml up -d --build
+```
+
+### Linux profile
+
+```bash
+docker compose -f docker/compose.linux.yaml down
+docker compose -f docker/compose.linux.yaml up -d --build
 ```
 
 ## Fresh instance (no prior chats/uploads)
@@ -239,6 +274,7 @@ docker compose -f docker/compose.macos-apple-silicon.fresh.yaml up -d
   - macOS Intel: try smaller models or lower concurrency.
   - macOS Apple Silicon: verify Ollama is using GPU (native, not Docker) and avoid other heavy GPU tasks.
   - Windows: ensure GPU drivers are current and reduce model size if you see timeouts.
+  - Linux: NVIDIA is best supported; AMD/Intel Arc may require smaller models and lower concurrency.
 - **iOS input zoom:** forcing inputs below 16px can trigger Safari zoom on focus; if that happens, revert the font size override in `perplexica/src/app/globals.css`.
 - **Docker build snapshot error:** if you see `failed to prepare extraction snapshot` during `docker compose ... --build`, clear build cache with `docker builder prune` (or `docker builder prune -a` if needed). Running this occasionally can also free disk space.
 
