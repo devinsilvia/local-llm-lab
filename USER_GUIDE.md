@@ -73,9 +73,19 @@ Profiles in this repo:
 4. Open Perplexica at `http://localhost:3000`.
 5. In Perplexica, configure:
    - A provider pointing at `http://host.docker.internal:11434`.
-   - A chat model and an embedding model. Use a tool-capable chat model (for example `llama3.1:8b-instruct-q4_0`) so web search works correctly.
+   - A chat model and an embedding model. Use a tool-capable chat model (for example `llama3.1:8b-instruct-q4_0`) so web search works correctly. See the model compatibility table below for confirmed models for a variety of hardware.
+   - Recommended embedding model: `nomic-embed-text:latest`. If you are on lower-tier hardware, see the embedding model guidance below for lighter-weight options.
 
 Once the provider and models are configured, you can chat immediately.
+
+### Picking an embedding model
+
+Embedding models control how uploaded documents are chunked and retrieved. For this local setup, `nomic-embed-text:latest` is the recommended default for quality; if your hardware struggles, use the lighter-weight options below.
+
+- **Fastest/lowest resource**: `all-minilm` (tiny and quick; best for low CPU/GPU).
+- **Better quality (slightly heavier)**: `embeddinggemma` (more compute, improved retrieval quality).
+
+If your machine struggles, start with `all-minilm`. If retrieval quality matters more than speed, try `embeddinggemma`.
 
 ### Daily use
 
