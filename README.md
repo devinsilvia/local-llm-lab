@@ -49,7 +49,8 @@ git submodule update --init --recursive
   - Launch Ollama once to complete setup.
   - Start it manually before Docker:
     - Run once: `ollama run llama3` to download and warm up a small model.
-- **Ollama option B:** use the `ollama` Docker service defined in `docker/compose.macos-intel.yaml`.
+   - **If using option A with the macOS Intel compose file:** comment out the `ollama` service and its `depends_on` entry in `docker/compose.macos-intel.yaml`, and ensure `BASE_URL = "http://host.docker.internal:11434"` in `config/config.macos-intel.toml`.
+- **Ollama option B:** use the `ollama` Docker service defined in `docker/compose.macos-intel.yaml` (note: running that compose file as-is uses this option).
 
 ## Additional prerequisites - macOS Apple Silicon
 
@@ -98,9 +99,9 @@ git submodule update --init --recursive
 ## Running the macOS Intel profile
 
 1. Clone the repo and `cd` into it.
-2. Ensure either:
-   - Native Ollama is running (`ollama serve` implicitly when you run a model), or
-  - You are going to use the `ollama` container in `docker/compose.macos-intel.yaml`.
+2. Choose your Ollama mode:
+   - **Option A (native Ollama, preferred):** start Ollama (`ollama serve` implicitly when you run a model) and keep `BASE_URL = "http://host.docker.internal:11434"` in `config/config.macos-intel.toml`. Also comment out the `ollama` service and its `depends_on` entry in `docker/compose.macos-intel.yaml`.
+   - **Option B (Dockerized Ollama):** keep the `ollama` service in `docker/compose.macos-intel.yaml` (default) and use `BASE_URL = "http://ollama:11434"` in `config/config.macos-intel.toml`.
 3. If using native Ollama:
    - Perplexica will talk to `http://host.docker.internal:11434`.
 4. Start the stack (builds images if needed):
