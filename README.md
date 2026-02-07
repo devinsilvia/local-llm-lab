@@ -168,6 +168,8 @@ Menu names can vary slightly by version, but the flow is typically:
 Note: Perplexica uses tool calling during search. If your chat model does not support tools in Ollama, requests can hang or fail. Use a tool-capable model (for example `llama3.1:8b-instruct-q4_0`) to avoid web-search failures.
 Perplexica v1.12.1 stores provider and model settings in its internal database under `/home/perplexica/data`, not in the `config/*.toml` files.
 
+Note: Model selections are stored in browser `localStorage`. If your model provider is temporarily unavailable (for example, Ollama not running), Perplexica keeps your saved selection rather than overwriting it. In private/incognito windows, no selection is persisted, so the first available models are used until you choose your own.
+
 If you do not see the setup flow, look for a Settings or Admin icon in the left sidebar or top navigation.
 
 ### Verifying models in Ollama

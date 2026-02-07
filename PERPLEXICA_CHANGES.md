@@ -19,6 +19,8 @@
 - Disabled the Discover/news surfaces in the UI.
 - Removed the post-response media sidebar (images/videos).
 - Updated preferences descriptions and defaults to indicate these features are disabled in this local setup.
+- Avoided overwriting saved chat/embedding model selections in localStorage when providers are temporarily unavailable, while still updating stale model keys when the provider is reachable.
+- Skipped search execution when both sources and file uploads are empty, preventing unnecessary search runs.
 
 Files touched inside the submodule:
 
@@ -33,6 +35,7 @@ Files touched inside the submodule:
 - `perplexica/src/app/api/uploads/[fileId]/route.ts`
 - `perplexica/src/lib/agents/search/index.ts`
 - `perplexica/src/lib/agents/search/api.ts`
+- `perplexica/src/lib/hooks/useChat.tsx`
 - `perplexica/src/lib/agents/search/types.ts`
 - `perplexica/src/lib/agents/search/researcher/index.ts`
 - `perplexica/src/lib/agents/search/researcher/actions/uploadsSearch.ts`
