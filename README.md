@@ -295,3 +295,7 @@ docker compose -f docker/compose.macos-apple-silicon.fresh.yaml up -d
 
 File uploads are stored under `/home/perplexica/data/uploads` inside the container.
 The compose files mount a named volume to `/home/perplexica/data` so uploaded files persist and are visible to the chat.
+
+## License
+
+This repository is licensed under the MIT License. See `LICENSE`.
