@@ -1,5 +1,7 @@
 # Local LLM Lab: Ollama + Perplexica
 
+**Disclaimer**: This repository was originally built for my own education and experimentation with local LLM stacks and Docker. It is not an official Ollama or Perplexica product, and it may contain custom modifications and configurations that differ from the original projects. Use at your own risk, but feel free to submit issues if you run into problems. Make sure you provide sufficient detail as to the nature of the setup and the issue(s) you're running into.
+
 ## Overview
 
 This repository provides a local LLM stack with:
