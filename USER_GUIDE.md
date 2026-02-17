@@ -40,8 +40,9 @@ Docker Compose is used to start the Perplexica container and supporting
 services. It also:
 - Provides a consistent runtime across macOS/Windows.
 - Persists Perplexica data via Docker volumes.
-- Connects Perplexica to Ollama via `host.docker.internal` when Ollama runs
-  natively.
+- Connects Perplexica to Ollama either:
+  - via `http://ollama:11434` when Ollama runs as a Compose service, or
+  - via `http://host.docker.internal:11434` when Ollama runs natively on host.
 
 ### Scripts (entry points)
 
@@ -55,10 +56,13 @@ Profiles in this repo:
 
 ## How the pieces fit together
 
-1. Ollama runs on the host and serves models over `http://localhost:11434`.
+1. Ollama runs either:
+   - as a host process on `http://localhost:11434`, or
+   - as the `ollama` Compose service for the macOS Intel Dockerized mode.
 2. Docker Compose starts Perplexica and maps its UI to `http://localhost:3000`.
-3. Perplexica is configured to call Ollama at
-   `http://host.docker.internal:11434`.
+3. Perplexica calls Ollama at:
+   - `http://ollama:11434` for Dockerized Ollama, or
+   - `http://host.docker.internal:11434` for native host Ollama.
 4. When you chat, Perplexica sends prompts to Ollama and renders responses.
 5. When you attach files, Perplexica ingests them, builds embeddings (via
    Ollama), and uses those chunks during later searches.
@@ -72,7 +76,9 @@ Profiles in this repo:
 3. Launch the stack using the appropriate script or Compose file.
 4. Open Perplexica at `http://localhost:3000`.
 5. In Perplexica, configure:
-   - A provider pointing at `http://host.docker.internal:11434`.
+   - A provider pointing at the correct URL for your mode:
+   - `http://ollama:11434` for Dockerized Ollama (macOS Intel compose default).
+   - `http://host.docker.internal:11434` for native host Ollama.
    - A chat model and an embedding model. Use a tool-capable chat model (for example `llama3.1:8b-instruct-q4_0`) so web search works correctly. See the model compatibility table below for confirmed models for a variety of hardware.
    - Recommended embedding model: `nomic-embed-text:latest`. If you are on lower-tier hardware, see the embedding model guidance below for lighter-weight options.
 
@@ -94,6 +100,24 @@ If your machine struggles, start with `all-minilm`. If retrieval quality matters
 3. Open the UI and chat.
 4. Use the paperclip to upload documents for retrieval (`.pdf`, `.docx`, `.txt`, `.md`).
 5. Ask questions referencing your uploads or using search tools.
+
+### Model management commands by Ollama mode
+
+Use the command set that matches where Ollama runs.
+
+```bash
+# Native host Ollama
+ollama list
+ollama pull llama3.1:8b-instruct-q4_0
+ollama pull nomic-embed-text:latest
+```
+
+```bash
+# Dockerized Ollama (macOS Intel compose default)
+docker compose -f docker/compose.macos-intel.yaml exec ollama ollama list
+docker compose -f docker/compose.macos-intel.yaml exec ollama ollama pull llama3.1:8b-instruct-q4_0
+docker compose -f docker/compose.macos-intel.yaml exec ollama ollama pull nomic-embed-text:latest
+```
 
 ### Stopping and resuming
 

@@ -50,9 +50,15 @@ git submodule update --init --recursive
   - Move the Ollama app to `/Applications` when prompted.
   - Launch Ollama once to complete setup.
   - Start it manually before Docker:
-    - Run once: `ollama run llama3` to download and warm up a small model.
+   - Run once: `ollama run llama3` to download and warm up a small model.
    - **If using option A with the macOS Intel compose file:** comment out the `ollama` service and its `depends_on` entry in `docker/compose.macos-intel.yaml`, and ensure `BASE_URL = "http://host.docker.internal:11434"` in `config/config.macos-intel.toml`.
 - **Ollama option B:** use the `ollama` Docker service defined in `docker/compose.macos-intel.yaml` (note: running that compose file as-is uses this option).
+- See the quick decision table below for the exact URL and command differences between option A and option B.
+
+| Intel mode | `docker/compose.macos-intel.yaml` | `config/config.macos-intel.toml` `BASE_URL` | Perplexica provider URL in UI | Model commands |
+| --- | --- | --- | --- | --- |
+| Native Ollama on host | Comment out `ollama` service and `depends_on` | `http://host.docker.internal:11434` | `http://host.docker.internal:11434` | `ollama list`, `ollama pull <model>` |
+| Dockerized Ollama (compose default) | Keep `ollama` service enabled | `http://ollama:11434` | `http://ollama:11434` | `docker compose -f docker/compose.macos-intel.yaml exec ollama ollama list` and `... ollama pull <model>` |
 
 ## Additional prerequisites - macOS Apple Silicon
 
@@ -102,10 +108,11 @@ git submodule update --init --recursive
 
 1. Clone the repo and `cd` into it.
 2. Choose your Ollama mode:
-   - **Option A (native Ollama, preferred):** start Ollama (`ollama serve` implicitly when you run a model) and keep `BASE_URL = "http://host.docker.internal:11434"` in `config/config.macos-intel.toml`. Also comment out the `ollama` service and its `depends_on` entry in `docker/compose.macos-intel.yaml`.
-   - **Option B (Dockerized Ollama):** keep the `ollama` service in `docker/compose.macos-intel.yaml` (default) and use `BASE_URL = "http://ollama:11434"` in `config/config.macos-intel.toml`.
-3. If using native Ollama:
-   - Perplexica will talk to `http://host.docker.internal:11434`.
+   - **Option A (native Ollama):** start Ollama (`ollama serve` implicitly when you run a model) and keep `BASE_URL = "http://host.docker.internal:11434"` in `config/config.macos-intel.toml`. Also comment out the `ollama` service and its `depends_on` entry in `docker/compose.macos-intel.yaml`.
+   - **Option B (Dockerized Ollama, compose default):** keep the `ollama` service in `docker/compose.macos-intel.yaml` and use `BASE_URL = "http://ollama:11434"` in `config/config.macos-intel.toml`.
+3. Confirm the endpoint Perplexica should use:
+   - Native Ollama: `http://host.docker.internal:11434`
+   - Dockerized Ollama: `http://ollama:11434`
 4. Start the stack (builds images if needed):
    - `./scripts/run-macos-intel.sh`
    - Or directly: `docker compose -f docker/compose.macos-intel.yaml up -d --build`
@@ -158,7 +165,9 @@ Menu names can vary slightly by version, but the flow is typically:
 
 1. Open the UI and go to **Settings** or **Connections**.
 2. Add a **provider/connection** for Ollama.
-   - API URL: `http://host.docker.internal:11434`
+   - API URL depends on your Ollama mode:
+   - `http://ollama:11434` when using the Dockerized Ollama service in `docker/compose.macos-intel.yaml`
+   - `http://host.docker.internal:11434` when using native Ollama on the host
    - API key: leave blank or use any placeholder if required by the form.
 3. Add a **chat model** and an **embedding model**.
    - Provider: `Ollama`
@@ -176,17 +185,26 @@ If you do not see the setup flow, look for a Settings or Admin icon in the left 
 
 ### Verifying models in Ollama
 
-Use these commands on the host to confirm the model keys available to Perplexica:
+Use the command that matches where Ollama is running:
 
 ```bash
+# Native Ollama on host
 ollama list
 ```
 
 If a model is missing, pull it once:
 
 ```bash
+# Native Ollama on host
 ollama pull llama3
 ollama pull nomic-embed-text
+```
+
+```bash
+# Dockerized Ollama service (macOS Intel compose default)
+docker compose -f docker/compose.macos-intel.yaml exec ollama ollama list
+docker compose -f docker/compose.macos-intel.yaml exec ollama ollama pull llama3
+docker compose -f docker/compose.macos-intel.yaml exec ollama ollama pull nomic-embed-text
 ```
 
 Then return to Perplexica and select the same model key.
